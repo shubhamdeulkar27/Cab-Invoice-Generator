@@ -13,6 +13,15 @@ namespace CabInvoiceGenerator
         private static readonly double MINIMUM_COST_PER_KM = 10;
         private static readonly int COST_PER_TIME = 1;
         private static readonly double MINIMUM_FARE = 5;
+        private RideRepository rideRepository;
+
+        /// <summary>
+        /// Constrcutor To Create RideRepository instance.
+        /// </summary>
+        public InvoiceGenerator()
+        {
+            this.rideRepository = new RideRepository();
+        }
 
         /// <summary>
         /// Function to Calculate Fare.
@@ -39,6 +48,26 @@ namespace CabInvoiceGenerator
                 totalFare += this.CalculateFare(ride.distance, ride.time);
             }
             return new InvoiceSummary(rides.Length, totalFare);
+        }
+
+        /// <summary>
+        /// Function to Add Rides For UserId.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="rides"></param>
+        public void AddRides(string userId, Ride[] rides)
+        {
+            rideRepository.AddRide(userId, rides);
+        }
+
+        /// <summary>
+        /// Function to Get Summary By UserId.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public InvoiceSummary GetInvoiceSummary(string userId)
+        {
+            return this.CalculateFare(rideRepository.GetRides(userId));
         }
     }
 }
