@@ -5,9 +5,11 @@ namespace CabInvoiceGeneratorTest
 {
     public class Tests
     {
+        InvoiceGenerator invoiceGenerator = null;
         [SetUp]
         public void Setup()
         {
+            invoiceGenerator = new InvoiceGenerator();
         }
 
         /// <summary>
@@ -16,7 +18,6 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenDistanceAndTimeSouldReturnTotalFare()
         {
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
             double distance = 2.0;
             int time = 5;
             double fare = invoiceGenerator.CalculateFare(distance, time);
@@ -30,12 +31,24 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenLessDistanceOrTimeShouldReturnMinimumFare()
         {
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
             double distance = 0.1;
             int time = 1;
             double fare = invoiceGenerator.CalculateFare(distance, time);
             double expected = 5;
             Assert.AreEqual(expected, fare);
         }
+
+        /// <summary>
+        /// Test Case For Checking Calculate Fare Function For Multiple Rides.
+        /// </summary>
+        [Test]
+        public void GivenMultipleRidesShouldReturnTotalFare()
+        {
+            Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+            double expected = 30;
+            double fare = invoiceGenerator.CalculateFare(rides);
+            Assert.AreEqual(expected, fare);
+        }
+
     }
 }
