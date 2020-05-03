@@ -9,18 +9,38 @@ namespace CabInvoiceGenerator
     /// </summary>
     public class InvoiceGenerator
     {
-        //Constants.
-        private static readonly double MINIMUM_COST_PER_KM = 10;
-        private static readonly int COST_PER_TIME = 1;
-        private static readonly double MINIMUM_FARE = 5;
+        /// <summary>
+        /// Enum for Cab Servie Class Type.
+        /// </summary>
+        public enum Class { NORMAL, PREMIUM }
+
+        //Variable.
+        Class classType;
         private RideRepository rideRepository;
 
+        //Constants.
+        private readonly double MINIMUM_COST_PER_KM;
+        private readonly int COST_PER_TIME;
+        private readonly double MINIMUM_FARE;
+        
         /// <summary>
         /// Constrcutor To Create RideRepository instance.
         /// </summary>
-        public InvoiceGenerator()
+        public InvoiceGenerator(InvoiceGenerator.Class classType)
         {
             this.rideRepository = new RideRepository();
+            if (classType.Equals(InvoiceGenerator.Class.PREMIUM))
+            {
+                this.MINIMUM_COST_PER_KM = 15;
+                this.COST_PER_TIME = 2;
+                this.MINIMUM_FARE = 20;
+            }
+            else if (classType.Equals(InvoiceGenerator.Class.NORMAL))
+            {
+                this.MINIMUM_COST_PER_KM = 10;
+                this.COST_PER_TIME = 1;
+                this.MINIMUM_FARE = 5;
+            }
         }
 
         /// <summary>
